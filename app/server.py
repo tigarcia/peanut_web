@@ -1,27 +1,42 @@
-import uvicorn, aiohttp
 from starlette.applications import Starlette
-from starlette.responses import HTMLResponse, JSONResponse
-from starlette.staticfiles import StaticFiles
-from starlette.middleware.cors import CORSMiddleware
-import asyncio
-from io import BytesIO
-import os
-
-from fastai import *
-from fastai.vision import *
-
-# export_file_url = 'https://www.dropbox.com/s/v6cuuvddq73d1e0/export.pkl?raw=1'
-# export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
-export_file_name = 'peanut.pkl'
-
-classes = ['facedown', 'awake']
-path = Path(__file__).parent
-port = int(os.environ.get('PORT', 8888))
+from starlette.responses import JSONResponse
+import uvicorn
 
 app = Starlette()
-app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
-app.mount('/static', StaticFiles(directory='app/static'))
 
+
+@app.route('/')
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)
+
+#
+# import uvicorn, aiohttp
+# from starlette.applications import Starlette
+# from starlette.responses import HTMLResponse, JSONResponse
+# from starlette.staticfiles import StaticFiles
+# from starlette.middleware.cors import CORSMiddleware
+# import asyncio
+# from io import BytesIO
+# import os
+#
+# from fastai import *
+# from fastai.vision import *
+#
+# export_file_url = 'https://www.dropbox.com/s/v6cuuvddq73d1e0/export.pkl?raw=1'
+# export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
+# export_file_name = 'peanut.pkl'
+#
+# classes = ['facedown', 'awake']
+# path = Path(__file__).parent
+# port = int(os.environ.get('PORT', 8888))
+#
+# app = Starlette()
+# app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
+# app.mount('/static', StaticFiles(directory='app/static'))
+#
 # async def download_file(url, dest):
 #     if dest.exists(): return
 #     async with aiohttp.ClientSession() as session:
@@ -41,17 +56,17 @@ app.mount('/static', StaticFiles(directory='app/static'))
 #             raise RuntimeError(message)
 #         else:
 #             raise
-
+#
 # loop = asyncio.get_event_loop()
 # tasks = [asyncio.ensure_future(setup_learner())]
 # learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
 # loop.close()
-
-@app.route('/')
-def index(request):
-    html = path/'view'/'index.html'
-    return HTMLResponse(html.open().read())
-
+#
+# @app.route('/')
+# def index(request):
+#     html = path/'view'/'index.html'
+#     return HTMLResponse(html.open().read())
+#
 # @app.route('/analyze', methods=['POST'])
 # async def analyze(request):
 #     data = await request.form()
@@ -59,6 +74,6 @@ def index(request):
 #     img = open_image(BytesIO(img_bytes))
 #     prediction = learn.predict(img)[0]
 #     return JSONResponse({'result': str(prediction)})
-
-if __name__ == '__main__':
-    uvicorn.run(app=app, host='0.0.0.0', port=port)
+#
+# if __name__ == '__main__':
+#     uvicorn.run(app=app, host='0.0.0.0', port=port)
