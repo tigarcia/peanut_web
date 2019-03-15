@@ -1,8 +1,8 @@
+import uvicorn, aiohttp
 from starlette.applications import Starlette
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
-import uvicorn, aiohttp
 import asyncio
 from io import BytesIO
 import os
