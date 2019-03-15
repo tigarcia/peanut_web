@@ -4,6 +4,7 @@ from starlette.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn, aiohttp, asyncio
 from io import BytesIO
+import os
 
 from fastai import *
 from fastai.vision import *
@@ -14,6 +15,7 @@ export_file_name = 'peanut.pkl'
 
 classes = ['facedown', 'awake']
 path = Path(__file__).parent
+port = int(os.environ.get('PORT', 8888))
 
 app = Starlette()
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
@@ -58,5 +60,4 @@ async def analyze(request):
     return JSONResponse({'result': str(prediction)})
 
 if __name__ == '__main__':
-    print("HERE")
-    uvicorn.run(app=app, host='0.0.0.0', port=8888)
+    uvicorn.run(app=app, host='0.0.0.0', port=port)
